@@ -1,4 +1,5 @@
 #include <SPI.h>
+#ifdef _SPI_H_INCLUDED
 #include "MPU.h"
 #include "Arduino.h"
 
@@ -132,3 +133,4 @@ int MPU_Gz(){
     byte_L = MPU_SPI_read(REG_GYRO_ZOUT_L);
     return (byte_H<<8)| byte_L;
 }
+#endif

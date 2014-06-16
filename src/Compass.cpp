@@ -1,4 +1,5 @@
 #include <Wire.h>
+#ifdef TwoWire_h
 #include "Compass.h"
 #include "Arduino.h"
 
@@ -78,3 +79,4 @@ float getHeadingTiltComp(int xshift, int xscalar,
 
 	return azimuth;
 }
+#endif

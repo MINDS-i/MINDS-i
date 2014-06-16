@@ -1,4 +1,5 @@
 #include <Servo.h>
+#ifdef Servo_h
 #include "Encoder.h"
 #include "MINDSi.h"
 
@@ -127,3 +128,4 @@ void inline calcrpm(){
 
 	_p_steps = _steps;
 }
+#endif
