@@ -3,7 +3,7 @@
 
 const uint16_t RADIO_CHECK_INTERVAL = 0x7550;  //loops - no interrupt timeout
 const uint32_t RADIO_TIMEOUT 		= 1000000; //microseconds interrupt timeout
-const uint16_t PING_TIMEOUT		    = 20000;   //milliseconds until no response
+const uint16_t PING_MAX			    = 20000;   //microseconds until no response
 
 volatile uint32_t pStart[EXTERNAL_NUM_INTERRUPTS];
 volatile uint32_t pTime [EXTERNAL_NUM_INTERRUPTS];
@@ -100,7 +100,8 @@ int getPing(int pin){
 	digitalWrite(pin, LOW);
 	delayMicroseconds(5);
 	setInput(pin);
-	int inputpulse = pulseIn(pin, HIGH, PING_TIMEOUT);
+	int inputpulse = pulseIn(pin, HIGH, PING_MAX);
+	if(inputpulse == 0) inputpulse = PING_MAX;
 	delayMicroseconds(200);
 	pinMode(pin, OUTPUT);
 	digitalWrite(pin, LOW);

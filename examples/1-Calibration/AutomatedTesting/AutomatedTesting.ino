@@ -1,5 +1,3 @@
-//#include "SPI.h"
-//#include "Wire.h"
 #include "Servo.h"
 #include "MINDSi.h"
 #include <EEPROM.h>
