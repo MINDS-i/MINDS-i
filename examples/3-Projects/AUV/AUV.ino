@@ -17,15 +17,13 @@ left:10 center:9 right:8
 
 Servo drive, steer, backsteer;
 unsigned long startTime;
-int right , front , left ;
-int rightc, frontc, leftc;
+int right, front, left;
 int steervalue;
 
 const int CENTER = 90;
 const int THROW = 45;
 const int FWDSPEED = 108;
 const int REVSPEED = 75;
-const int WAIT = 6;
 				//left,center,right
 const int HAZARD_DIST[] = {650, 3000, 650}; //Raise these on 6x6's
 
@@ -43,11 +41,11 @@ void setup() {
  }
 
 void loop(){
-	if ((rightc = getPing(9) ) != 0) right = rightc;
-	if ((leftc  = getPing(11)) != 0) left = leftc;
-	delay(WAIT);
-	if ((frontc = getPing(10)) != 0) front = frontc;
-	delay(WAIT);
+	right = getPing(9);
+	delay(10);
+	left  = getPing(11);
+	delay(10);
+	front = getPing(10);
 
 	if (	(left < HAZARD_DIST[0] ||
 			front < HAZARD_DIST[1] ||
@@ -66,7 +64,7 @@ void loop(){
 		startTime = millis();
 		while ((millis()-startTime)<1500 || front<5500) {
 			front = getPing(10);
-			delay(WAIT);
+			delay(10);
 		}
 		drive.write(90);
 

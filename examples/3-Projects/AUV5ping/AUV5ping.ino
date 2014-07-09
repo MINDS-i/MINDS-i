@@ -20,15 +20,13 @@
 
 Servo drive, frontsteer, backsteer;
 unsigned long startTime;
-int east , right , front , left , west ;
-int eastc, rightc, frontc, leftc, westc;
+int east, right, front, left, west;
 int steervalue;
 
 const int CENTER = 90;
 const int TURN = 45;
 const int FWDSPEED = 115;
 const int REVSPEED = 70;
-const int wait = 6;
 
                         //west,left,center,right,east
 const int HAZARD_DIST[] = {650, 800, 3000, 800, 650}; //Raise these on 6x6's
@@ -56,14 +54,14 @@ void loop(){
 }
 
 void autodrive(){
-  if((eastc = getPing(7))  != 0) east = eastc;
-  if((westc = getPing(11)) != 0) west = westc;
-  delay(wait);
-  if((rightc = getPing(8)) != 0) right = rightc;
-  if((leftc = getPing(10)) != 0) left = leftc;
-  delay(wait);
-  if((frontc = getPing(9)) != 0) front = frontc;
-  delay(wait);
+  east = getPing(7);
+  west = getPing(11);
+  delay(10);
+  right = getPing(8);
+  left = getPing(10);
+  delay(10);
+  front = getPing(9);
+  delay(10);
 
   if (  west  < HAZARD_DIST[0] ||
         left  < HAZARD_DIST[1] ||
@@ -84,7 +82,7 @@ void autodrive(){
     startTime = millis();
     while ((millis()-startTime)<1500 || front<5500) {
       front = getPing(9);
-      delay(wait);
+      delay(10);
     }
     drive.write(90);
 
