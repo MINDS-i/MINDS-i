@@ -1,6 +1,5 @@
 #include <Servo.h>
 #include <MINDSi.h>
-#include <GreatCircle.h>
 
 /*
 This code uses a radio plugged in to RadioPin[] to drive around, but uses 5 ping
@@ -33,7 +32,6 @@ void setup(){
 	uTime = millis();
 	getRadio(RadioPin[0]);
 }
-
 void loop(){
 	if(uTime <= millis()){
 		uTime += 100;
@@ -41,14 +39,12 @@ void loop(){
 		navigate();
 	}
 }
-
 void checkPing(){
 	ping[pIter] = getPing(PingPin[pIter]);
 	pIter++;
 	pIter = pIter%5;
 	if(ping[pIter] < warn[pIter]) oTime = millis();
 }
-
 void navigate(){
 	 if (oTime != 0) {
 		if(nTime == 0){
@@ -82,9 +78,18 @@ void navigate(){
 		output(getRadio(RadioPin[0]), outputAngle);
 	}
 }
-
 void output(uint8_t drive, uint8_t steer){
 	servo[0].write(drive);
 	servo[1].write(steer);
 	servo[2].write(180-steer);
+}
+double toRad(double degrees){
+	degrees /= 180.l;
+	degrees *= PI;
+	return degrees;
+}
+double toDeg(double radians){
+	radians /= PI;
+	radians *= 180.l;
+	return radians;
 }
