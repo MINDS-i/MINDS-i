@@ -50,7 +50,7 @@ int getRadioPulse(int pin, bool interrupt){
 		if( !isIntOn(iNum) ) {
 			attachInterrupt(iNum, func[iNum], CHANGE);
 			interruptPin[iNum]=pin; //there is no interruptToDigitalPin Macro
-			interruptOn[iNum]=true;
+			interruptOn[iNum] =true;
 			interrupts();
 		} else {
 			pulse = pTime[iNum];
