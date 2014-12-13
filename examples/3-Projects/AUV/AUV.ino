@@ -62,8 +62,10 @@ void loop(){
 		//back up until enough room is found
 		drive.write(REVSPEED);
 		startTime = millis();
-		while ((millis()-startTime)<1500 || front<5500) {
-			front = getPing(10);
+		while ((millis()-startTime)<1500) {
+			//Stop the backup loop if sensors detect problems
+			//if (!digitalRead(13) | !digitalRead(12)) break; //IR disabled
+			if (getPing(10) < 5500) break;
 			delay(10);
 		}
 		drive.write(90);
