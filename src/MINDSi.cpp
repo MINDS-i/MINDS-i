@@ -36,6 +36,8 @@ voidFuncPtr func[EXTERNAL_NUM_INTERRUPTS]={
 #endif
 };
 
+//template a static class recursivly w/ interrupt functions?
+
 boolean inline isIntOn(int interrupt){
 	//the registers differ too much on each chip to read directly
 	return interruptOn[interrupt];
