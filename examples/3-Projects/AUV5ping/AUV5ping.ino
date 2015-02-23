@@ -28,7 +28,7 @@ const int TURN = 45;
 const int FWDSPEED = 115;
 const int REVSPEED = 70;
 
-                        //west,left,center,right,east
+//west,left,center,right,east
 const int HAZARD_DIST[] = {650, 800, 3000, 800, 650}; //Raise these on 6x6's
 
 void setup() {
@@ -42,9 +42,9 @@ void setup() {
   steer(CENTER);
   drive.write(90);
   delay(2000);
- }
+}
 
-void loop(){
+void loop() {
   //this will give manual control if a radio is plugged in
   if (micros() - timeLastSignal() < 100000) {
     drive.write(getRadio(2));
@@ -53,7 +53,7 @@ void loop(){
   else autodrive();
 }
 
-void autodrive(){
+void autodrive() {
   east = getPing(7);
   west = getPing(11);
   delay(10);
@@ -73,14 +73,14 @@ void autodrive(){
     delay(750);
 
     //turn in the most favorable direction
-    if(left > right) steer(CENTER+TURN);
-    else steer(CENTER-TURN);
+    if (left > right) steer(CENTER + TURN);
+    else steer(CENTER - TURN);
     delay(50);
 
     //back up until enough room is found
     drive.write(REVSPEED);
     startTime = millis();
-    while ((millis()-startTime)<1500) {
+    while ((millis() - startTime) < 1500) {
       //Stop the backup loop if sensors detect problems
       //if (!digitalRead(13) | !digitalRead(12)) break; //IR disabled
       if (getPing(9) < 5500) break;
@@ -93,13 +93,13 @@ void autodrive(){
     delay(1000);
     drive.write(FWDSPEED);
   }
-  else{
+  else {
     //turn away from near walls
-    int lAve = (left+west/2);
-    int rAve= (right+east/2);
+    int lAve = (left + west / 2);
+    int rAve = (right + east / 2);
     bound(0, lAve, 4000);
-    bound(0, rAve,4000);
-    steervalue = map(lAve-rAve, -4000, 4000, CENTER+TURN, CENTER-TURN);
+    bound(0, rAve, 4000);
+    steervalue = map(lAve - rAve, -4000, 4000, CENTER + TURN, CENTER - TURN);
     steer(steervalue);
     drive.write(FWDSPEED);
   }
@@ -108,5 +108,5 @@ void autodrive(){
 //methods are used to save space on simple, but often repeated lines of code
 void inline steer(int out) {
   frontsteer.write(out);
-  backsteer.write(180-out);
+  backsteer.write(180 - out);
 }

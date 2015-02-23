@@ -25,12 +25,12 @@ void setup() {
 }
 
 void loop() {
-  Z = analogRead(A2)/1024;  //store the value read
+  Z = analogRead(A2) / 1024; //store the value read
 
   //if less than half of normal G's is read on the Z axis (up/down), stop
   if (Z < downReading) {
-  	drive.write(90);
+    drive.write(90);
   } else {
-  	drive.write(100); //otherwise drive
+    drive.write(100); //otherwise drive
   }
 }

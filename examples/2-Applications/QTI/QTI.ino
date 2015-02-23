@@ -27,7 +27,7 @@ void setup()
   drive.write(100);
 }
 
-void loop(){
+void loop() {
   //first check if the left sensor is on the line, if not check the right sensor
   //and finally check if the center sensor says to go strait, otherwise
   //don't change the desired direction

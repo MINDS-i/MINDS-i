@@ -18,12 +18,12 @@ float mph;
 int dist;
 float feet;
 
-  //Since these conversions vary based on measurments of the robot, these must be calculated here
-  //(wheel Diameter*PI) * minutes per hour / (inches per mile * gear ratio)
-float RPMtoMPH = ((5. *PI)*60.)/(63360.*(37./13.));
+//Since these conversions vary based on measurments of the robot, these must be calculated here
+//(wheel Diameter*PI) * minutes per hour / (inches per mile * gear ratio)
+float RPMtoMPH = ((5. *PI) * 60.) / (63360.*(37. / 13.));
 
-  //(wheel Diameter*PI) / (inches to foot * steps per rotation * gear ratio)
-float STPtoFeet = (5. *PI)/(12.*100.*(37./13.));
+//(wheel Diameter*PI) / (inches to foot * steps per rotation * gear ratio)
+float STPtoFeet = (5. *PI) / (12.*100.*(37. / 13.));
 
 void setup() {
   Serial.begin(9600);  //start a serial connection
@@ -34,7 +34,7 @@ void loop() {
   val = getRPM();  //read the average rpm of the last 50th of a second
   mph = val * RPMtoMPH;
   dist = getSteps();  //read the total steps the encoder has moved
-  feet = dist*STPtoFeet;
+  feet = dist * STPtoFeet;
 
 
   Serial.print("RPM: ");  //send a string or value on the serial connection

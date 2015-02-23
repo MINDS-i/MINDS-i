@@ -15,7 +15,7 @@
 /http://www.freescale.com/files/sensors/doc/data_sheet/MMA7260QT.pdf
 /***************************************************/
 
-float X,Y,Z;
+float X, Y, Z;
 
 void setup() {
   Serial.begin(9600);  //start a serial connection

@@ -9,12 +9,12 @@
 / This code will Stop and turn whenever something blocks its path
 /***************************************************/
 
-Servo leftServo,rightServo;
+Servo leftServo, rightServo;
 
 const int center = 93;
 const int hazardDist = 750;
 
-void setup(){
+void setup() {
   leftServo.attach(5);
   rightServo.attach(4);
 
@@ -22,7 +22,7 @@ void setup(){
   rightServo.write(180);
 }
 
-void loop(){
+void loop() {
   if (getPing(10) < hazardDist) {
 
     leftServo.write(center); //liberal coasting to prevent brownouts

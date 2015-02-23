@@ -24,69 +24,69 @@ const int CENTER = 90;
 const int THROW = 45;
 const int FWDSPEED = 108;
 const int REVSPEED = 75;
-				//left,center,right
+//left,center,right
 const int HAZARD_DIST[] = {650, 3000, 650}; //Raise these on 6x6's
 
 void setup() {
-	pinMode(13, INPUT);
-	pinMode(12, INPUT);
+  pinMode(13, INPUT);
+  pinMode(12, INPUT);
 
-	drive.attach(4);
-	steer.attach(5);
-	backsteer.attach(6);
+  drive.attach(4);
+  steer.attach(5);
+  backsteer.attach(6);
 
-	setSteer(CENTER);
-	drive.write(90);
-	delay(2000);
- }
+  setSteer(CENTER);
+  drive.write(90);
+  delay(2000);
+}
 
-void loop(){
-	right = getPing(9);
-	delay(10);
-	left  = getPing(11);
-	delay(10);
-	front = getPing(10);
+void loop() {
+  right = getPing(9);
+  delay(10);
+  left  = getPing(11);
+  delay(10);
+  front = getPing(10);
 
-	if (	(left < HAZARD_DIST[0] ||
-			front < HAZARD_DIST[1] ||
-			right < HAZARD_DIST[2]) && drive.read()==FWDSPEED) {
-		//wait for the vehicle to stop
-		drive.write(90);
-		delay(750);
+  if (	(left < HAZARD_DIST[0] ||
+         front < HAZARD_DIST[1] ||
+         right < HAZARD_DIST[2]) && drive.read() == FWDSPEED) {
+    //wait for the vehicle to stop
+    drive.write(90);
+    delay(750);
 
-		//turn in the most favorable direction
-		if(left > right) setSteer(CENTER+THROW);
-		else setSteer(CENTER-THROW);
-		delay(50);
+    //turn in the most favorable direction
+    if (left > right) setSteer(CENTER + THROW);
+    else setSteer(CENTER - THROW);
+    delay(50);
 
-		//back up until enough room is found
-		drive.write(REVSPEED);
-		startTime = millis();
-		while ((millis()-startTime)<1500) {
-			//Stop the backup loop if sensors detect problems
-			//if (!digitalRead(13) | !digitalRead(12)) break; //IR disabled
-			if (getPing(10) < 5500) break;
-			delay(10);
-		}
-		drive.write(90);
+    //back up until enough room is found
+    drive.write(REVSPEED);
+    startTime = millis();
+    while ((millis() - startTime) < 1500) {
+      //Stop the backup loop if sensors detect problems
+      //if (!digitalRead(13) | !digitalRead(12)) break; //IR disabled
+      if (getPing(10) < 5500) break;
+      delay(10);
+    }
+    drive.write(90);
 
-		//center the wheels and resume driving
-		setSteer(CENTER);
-		delay(1000);
-		drive.write(FWDSPEED);
-	}
-	else{
-		//turn away from near walls
-		bound(0, left, 4000);
-		bound(0, right,4000);
-		steervalue = map(left-right, -4000, 4000, CENTER+THROW, CENTER-THROW);
-		setSteer(steervalue);
-		drive.write(FWDSPEED);
-	}
+    //center the wheels and resume driving
+    setSteer(CENTER);
+    delay(1000);
+    drive.write(FWDSPEED);
+  }
+  else {
+    //turn away from near walls
+    bound(0, left, 4000);
+    bound(0, right, 4000);
+    steervalue = map(left - right, -4000, 4000, CENTER + THROW, CENTER - THROW);
+    setSteer(steervalue);
+    drive.write(FWDSPEED);
+  }
 }
 
 //methods are used to save space on simple, but often repeated lines of code
 void inline setSteer(int out) {
-	steer.write(out);
-	backsteer.write(180-out);
+  steer.write(out);
+  backsteer.write(180 - out);
 }

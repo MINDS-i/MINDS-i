@@ -11,7 +11,7 @@
 /motion and prevent wobbling.
 /***************************************************/
 
-Servo leftServo,rightServo;
+Servo leftServo, rightServo;
 bool left, middle, right;
 
 float Lout, Rout;
@@ -23,7 +23,7 @@ double adj;
 
 const int center = 90;
 
-void setup(){
+void setup() {
   Serial.begin(115200);
 
   leftServo.attach(5); //set a pin for a servo/ESC to use
@@ -36,7 +36,7 @@ void setup(){
   Lout = center;
 }
 
-void loop(){
+void loop() {
   left = QTI(A0) > 120;
   middle = QTI(A1) > 120;
   right = QTI(A2) > 120;
@@ -45,11 +45,11 @@ void loop(){
     Lset = center + 6;
     Rset = center + 45;
   }
-  else if(right){
+  else if (right) {
     Lset = center - 45;
     Rset = center - 6;
   }
-  else if(middle){
+  else if (middle) {
     Lset = center - 45;
     Rset = center + 45;
   }
@@ -57,17 +57,17 @@ void loop(){
   output();
 }
 
-void output(){
+void output() {
   //all this is because the QTI Blocks for a variable amount of time
-  #define rxtime .25
+#define rxtime .25
 
   dT = ( double(millis() - time) / 100) ;
   time = millis();
 
   adj = pow(rxtime, dT);
 
-  Rout = ( Rout*adj ) + ( Rset*(1-adj) );
-  Lout = ( Lout*adj ) + ( Lset*(1-adj) );
+  Rout = ( Rout * adj ) + ( Rset * (1 - adj) );
+  Lout = ( Lout * adj ) + ( Lset * (1 - adj) );
 
   leftServo.write(Lout);
   rightServo.write(Rout);

@@ -28,8 +28,8 @@ void setup() {
 void loop() {
   //if there is no room in front, stop
   if (getPing(10) < 1500) {
-  	drive.write(90);
+    drive.write(90);
   } else {  //otherwise go forward
-  	drive.write(100);
+    drive.write(100);
   }
 }
