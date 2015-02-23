@@ -6,51 +6,20 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-Cruise	KEYWORD1
+encoder        KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
 
-getRadio		KEYWORD2
-getRadioPulse  	KEYWORD2
-isRadioOn		KEYWORD2
-timeLastSignal 	KEYWORD2
-getPing			KEYWORD2
-QTI				KEYWORD2
-bound 			KEYWORD2
-fastDigitalRead KEYWORD2
+getPing        KEYWORD2
+QTI            KEYWORD2
+isRadioOn      KEYWORD2
+getRadioPulse  KEYWORD2
+getRadio       KEYWORD2
 
-beginCompass    KEYWORD2
-rawCompass		KEYWORD2
-getHeading		KEYWORD2
-getHeadingTiltComp KEYWORD2
-
-startEncoder	KEYWORD2
-getSteps		KEYWORD2
-getRPM			KEYWORD2
-calcrpm			KEYWORD2
-
-attach			KEYWORD2
-tune			KEYWORD2
-bounds			KEYWORD2
-setControl		KEYWORD2
-update			KEYWORD2
-detach			KEYWORD2
-stopControl		KEYWORD2
-write			KEYWORD2
-isStalled		KEYWORD2
-
-InitMPU			KEYWORD2
-MPU_Read6		KEYWORD2
-MPU_Gyro		KEYWORD2
-MPU_Accl		KEYWORD2
-MPU_Ax			KEYWORD2
-MPU_Ay			KEYWORD2
-MPU_Az			KEYWORD2
-MPU_Gx			KEYWORD2
-MPU_Gy 			KEYWORD2
-MPU_Gz 			KEYWORD2
+begin          KEYWORD2
+getRPM         KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
