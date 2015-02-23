@@ -50,6 +50,8 @@ void empty();
 int analogIntRead(int pin);
 int digitalIntRead(int pin);
 int simpleRadioRead(int pin);
+int getIntPing(int pin);
+int getIntQTI(int pin);
 
 void setup(){
 	Serial.begin(9600);
@@ -72,12 +74,12 @@ void loop(){
 			break;
 		case 'P':
 		case 'p':
-			readFromPins("Ping Sensors", getPing);
+			readFromPins("Ping Sensors", getIntPing);
 			menu();
 			break;
 		case 'Q':
 		case 'q':
-			readFromPins("QTI Sensors", QTI);
+			readFromPins("QTI Sensors", getIntQTI);
 			menu();
 			break;
 		case 'R':
@@ -249,16 +251,21 @@ void motorController(){
 	}
 }
 
+//function pointer helpers
 int analogIntRead(int pin) {
 	return analogRead(pin);
 }
-
 int digitalIntRead(int pin) {
 	return digitalRead(pin);
 }
-
 int simpleRadioRead(int pin){
 	return getRadio(pin);
+}
+int getIntPing(int pin){
+	return getPing(pin);
+}
+int getIntQTI(int pin){
+	return QTI(pin);
 }
 
 void empty(){
