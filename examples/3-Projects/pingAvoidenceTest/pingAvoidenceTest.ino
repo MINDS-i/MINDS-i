@@ -74,7 +74,7 @@ void navigate() {
     }
 
     outputAngle = toDeg(atan2(y, x)) + 90;
-    bound(45, outputAngle, 135);
+    constrain(outputAngle, 45, 135);
     output(getRadio(RadioPin[0]), outputAngle);
   }
 }

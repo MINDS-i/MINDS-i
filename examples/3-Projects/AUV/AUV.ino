@@ -77,8 +77,8 @@ void loop() {
   }
   else {
     //turn away from near walls
-    bound(0, left, 4000);
-    bound(0, right, 4000);
+    constrain(left, 0, 4000);
+    constrain(right,0, 4000);
     steervalue = map(left - right, -4000, 4000, CENTER + THROW, CENTER - THROW);
     setSteer(steervalue);
     drive.write(FWDSPEED);

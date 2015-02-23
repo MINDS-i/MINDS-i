@@ -6,20 +6,21 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-encoder        KEYWORD1
+encoder         KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
 
-getPing        KEYWORD2
-QTI            KEYWORD2
-isRadioOn      KEYWORD2
-getRadioPulse  KEYWORD2
-getRadio       KEYWORD2
+getPing         KEYWORD2
+QTI             KEYWORD2
+isRadioOn       KEYWORD2
+getRadioPulse   KEYWORD2
+getRadio        KEYWORD2
+fastDigitalRead KEYWORD2
 
-begin          KEYWORD2
-getRPM         KEYWORD2
+begin           KEYWORD2
+getRPM          KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

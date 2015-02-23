@@ -1,6 +1,6 @@
 #ifndef ENCODER_H
 #define ENCODER_H
-
+#include "MINDSi.h"
 class encoder{
 private:
 	static const uint16_t timestep   = 10;

@@ -15,11 +15,6 @@ namespace { //make sure these vars/functions aren't visible outside
 		return interruptOn[interrupt];
 	}
 	
-	//normal digitalRead is too slow for Interrupt handlers
-	inline bool fastDigitalRead(int pin){
-		return *portInputRegister(digitalPinToPort(pin)) 
-				& digitalPinToBitMask(pin);
-	}
 	
 	template<int num>
 	void inline iFunc(void){
@@ -46,6 +41,12 @@ namespace { //make sure these vars/functions aren't visible outside
 	#endif
 	#endif
 	};
+}
+
+//normal digitalRead is too slow for Interrupt handlers
+inline bool fastDigitalRead(int pin){
+	return *portInputRegister(digitalPinToPort(pin)) 
+			& digitalPinToBitMask(pin);
 }
 
 int getRadioPulse(int pin, bool interrupt){

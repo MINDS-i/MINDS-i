@@ -16,4 +16,6 @@ bool isRadioOn(int pin, uint32_t timeoutMicros = 5000);
 int getRadioPulse(int pin, bool interrupt);
 int getRadio(int pin, int min = 45, int max = 135, bool interrupt = true);
 
+bool fastDigitalRead(int pin);
+
 #endif

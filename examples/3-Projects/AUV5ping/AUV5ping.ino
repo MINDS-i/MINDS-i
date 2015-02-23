@@ -46,7 +46,7 @@ void setup() {
 
 void loop() {
   //this will give manual control if a radio is plugged in
-  if (micros() - timeLastSignal() < 100000) {
+  if (isRadioOn(2)) {
     drive.write(getRadio(2));
     steer(getRadio(3));
   }
@@ -97,8 +97,8 @@ void autodrive() {
     //turn away from near walls
     int lAve = (left + west / 2);
     int rAve = (right + east / 2);
-    bound(0, lAve, 4000);
-    bound(0, rAve, 4000);
+    constrain(left, 0, 4000);
+    constrain(right,0, 4000);
     steervalue = map(lAve - rAve, -4000, 4000, CENTER + TURN, CENTER - TURN);
     steer(steervalue);
     drive.write(FWDSPEED);
