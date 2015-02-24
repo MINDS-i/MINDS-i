@@ -13,7 +13,8 @@
 /http://www.usdigital.com/products/encoders/incremental/rotary/kit/e2
 /***************************************************/
 
-float val;
+float rpm;
+float rev;
 float mph;
 
 const int encoderPins[2] = {2,3};
@@ -28,11 +29,15 @@ void setup() {
 }
 
 void loop() {
-  val = encoder::getRPM();
-  mph = val * RPMtoMPH;
+  rpm = encoder::getRPM();
+  rev = encoder::getRev();
+  mph = rpm * RPMtoMPH;
   
   Serial.print("RPM: "); 
-  Serial.print(val);
+  Serial.print(rpm);
   Serial.print("\tMPH: ");
   Serial.print(mph);
+  Serial.print("\tREV: ");
+  Serial.print(rev);
+  Serial.print("\n");
 }

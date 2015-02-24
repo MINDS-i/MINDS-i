@@ -19,6 +19,6 @@ void setup() {
 }
 
 void loop() {
-  val = digitalRead(3);  //read in the digital value on pin 13
+  val = digitalRead(3);  //read in the digital value on pin 3
   Serial.println(val);  //send a string or value on the serial connection
 }

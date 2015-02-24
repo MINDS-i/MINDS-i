@@ -5,19 +5,20 @@ class encoder{
 private:
 	static const uint16_t timestep   = 10;
 	static const uint8_t  sampleSize = 8;
+	static const float TpR = 100.0f; //ticks per revolution
 	static const float rpmConvFactor = //converts average-sums into rpm
 			//ms per min  / (samples per avsum)*(ms per sample)*(ticks per rev)
-			(60.f*1000.f) / ((sampleSize)      *(timestep)     *100.f);
+			(60.f*1000.f) / ((sampleSize)      *(timestep)     * 100.0f);
 	static int16_t average[sampleSize];
 	static int16_t* avptr;
 	static uint32_t time;
 	static int8_t  pin[2];
-	static int16_t tickCount;
+	static int16_t tickCount, lastCount;
 	static void stepAverage(){
 		while(millis()-time > timestep) {
 			time += timestep;
-			pushAverage(tickCount);
-			tickCount = 0;
+			pushAverage(tickCount-lastCount);
+			lastCount = tickCount;
 		}
 	}
 	static void interrupt(void){
@@ -74,11 +75,15 @@ public:
 		}
 		return ((float)avsum)*rpmConvFactor;
 	}
+	static float getRev(){
+		return float(tickCount)/TpR;
+	}
 };
 //static var initializations
 int16_t  encoder::average[] = {0};
 int8_t   encoder::pin[] = {-1};
 int16_t  encoder::tickCount = 0;
+int16_t  encoder::lastCount = 0;
 uint32_t encoder::time = 0;
 int16_t* encoder::avptr = average;
 
