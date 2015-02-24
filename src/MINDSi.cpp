@@ -1,7 +1,7 @@
 #include "MINDSi.h"
 
 namespace { //make sure these vars/functions aren't visible outside
-	const uint32_t radio_timeout = 5000;
+	const uint32_t radio_timeout =32000;
 	const uint32_t radio_min_int = 1000;
 	const uint32_t radio_max_int = 2000;
 	
@@ -67,12 +67,13 @@ int getRadioPulse(int pin, bool interrupt){
 		pulse = pulseIn(pin, HIGH, radio_timeout);
 	}
 
-	if(pulse == 0) pulse = 1500; //1500 is exactly centered ppm signal
+	if(pulse == 0) pulse = (radio_min_int+radio_max_int)/2;
 	return pulse;
 }
 
 int getRadio(int pin, int min, int max, bool interrupt){
-	int sig = map(getRadioPulse(pin,interrupt), 1020, 1980, min, max);
+	int sig = map(getRadioPulse(pin,interrupt), radio_min_int, radio_max_int, 
+												min, 		   max);
 	constrain(sig, 0, 180);
 	return sig;
 }
