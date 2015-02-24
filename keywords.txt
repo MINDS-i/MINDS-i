@@ -21,6 +21,7 @@ fastDigitalRead KEYWORD2
 
 begin           KEYWORD2
 getRPM          KEYWORD2
+getRev          KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
