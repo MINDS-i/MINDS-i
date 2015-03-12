@@ -1,27 +1,24 @@
 #include <Servo.h>
 
 /***************************************************
-/MINDS-i Calibration. mymindsi.com
+/ Example provided by MINDS-i
+/ Try checking out our arduino resource guide at
+/ http://mindsieducation.com/programming-resources
+/ Questions? Concerns? Bugs? email code@mymindsi.com
 /
-/Servo Calibration
-/
-/This Servo Calibration code is used to test
-/and center your servo.
-/
-/a servo on pin 5 will be moved to its center position
-/
-/To learn more about our stock servos visit:
-/http://www.hitecrcd.com/products/analog/standard-sport/hs-485hb.html
+/ This code expects a servo plugged into pin 5
 /***************************************************/
-
 Servo myservo;
 
 void setup() {
-  myservo.attach(5); //set a pin for a servo/ESC to use
+  //set a pin for a servo/ESC to use
+  myservo.attach(5);
+
+  //set the output to 90 degrees (center)
+  myservo.write (90);
 }
 
 void loop() {
-  myservo.write (90); //set the output to 90 degrees (center)
 }
 
 

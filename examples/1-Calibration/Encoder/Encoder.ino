@@ -3,23 +3,24 @@
 #include "Encoder.h"
 
 /***************************************************
-/MINDS-i Encoder Calibration. mymindsi.com
+/ Example provided by MINDS-i
+/ Try checking out our arduino resource guide at
+/ http://mindsieducation.com/programming-resources
+/ Questions? Concerns? Bugs? email code@mymindsi.com
 /
-/This Encoder Calibration code is used to test
-/and adjust your encoder as well as to establish
-/the measurement that it’s reading.
-/
-/To learn more about the encoder visit:
-/http://www.usdigital.com/products/encoders/incremental/rotary/kit/e2
+/ This code expects an encoder plugged into pins 2 and 3
+/ If you get the order wrong, rolling backwards
+/ would read as positive rpm and vice versa
 /***************************************************/
 
 float rpm;
 float rev;
 float mph;
 
-const int encoderPins[2] = {2,3};
+const int encoderPins[2] = {2, 3};
 
-//Since these conversions vary based on measurments of the robot, these must be calculated here
+//Since these conversions vary based on measurements of the robot,
+//these must be calculated here
 //(wheel Diameter*PI) * minutes per hour / (inches per mile * gear ratio)
 float RPMtoMPH = ((5. *PI) * 60.) / (63360.*(37. / 13.));
 
@@ -32,8 +33,8 @@ void loop() {
   rpm = encoder::getRPM();
   rev = encoder::getRev();
   mph = rpm * RPMtoMPH;
-  
-  Serial.print("RPM: "); 
+
+  Serial.print("RPM: ");
   Serial.print(rpm);
   Serial.print("\tMPH: ");
   Serial.print(mph);

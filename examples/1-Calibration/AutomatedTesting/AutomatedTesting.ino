@@ -7,19 +7,18 @@
 #include "pins_arduino.h"
 
 /***************************************************
-/MINDS-i Calibration. mymindsi.com
+/ Example provided by MINDS-i
+/ Try checking out our arduino resource guide at
+/ http://mindsieducation.com/programming-resources
+/ Questions? Concerns? Bugs? email code@mymindsi.com
 /
-/This code is controlled by sending commands in the
-/serial terminal. Upload and open the serial terminal,
-/then follow the menu's instructions
-/
-/capable of testing the standard 4x4 layout for errors
-/Also capable of streaming any number of:
-/	analog Sensors
-/	digital Sensors
-/	QTI Sensors
-/	Ping Sensors
-/And reading/clearing EEPROM
+/ Capable of testing the standard 4x4 layout for errors
+/ Or, Use to read any number of:
+/ analog Sensors
+/ digital Sensors
+/ QTI Sensors
+/ Ping Sensors
+/ And reading/clearing EEPROM
 /***************************************************/
 
 const int dQTIs[3] = {A0, A1, A2};

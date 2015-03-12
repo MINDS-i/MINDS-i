@@ -2,13 +2,13 @@
 #include <Servo.h>
 
 /***************************************************
-/ mymindsi.com
+/ Example provided by MINDS-i
+/ Try checking out our arduino resource guide at
+/ http://mindsieducation.com/programming-resources
+/ Questions? Concerns? Bugs? email code@mymindsi.com
 /
-/ Line Following Robot - Line only code
-/
-/This code will follow a line using its three QTI sensors
-/it uses a time-adjusted exponential running average to smooth out
-/motion and prevent wobbling.
+/ This example expects 2 servos in pins 4 and 5
+/ and three QTI sensors in pins A0, A1, and A2
 /***************************************************/
 
 Servo leftServo, rightServo;
@@ -26,7 +26,7 @@ const int center = 90;
 void setup() {
   Serial.begin(115200);
 
-  leftServo.attach(5); //set a pin for a servo/ESC to use
+  leftServo.attach(5);
   rightServo.attach(4);
 
   leftServo.write(center);
@@ -37,9 +37,9 @@ void setup() {
 }
 
 void loop() {
-  left = QTI(A0) > 120;
+  left   = QTI(A0) > 120;
   middle = QTI(A1) > 120;
-  right = QTI(A2) > 120;
+  right  = QTI(A2) > 120;
 
   if (left) {
     Lset = center + 6;

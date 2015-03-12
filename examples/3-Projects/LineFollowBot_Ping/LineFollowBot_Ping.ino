@@ -2,11 +2,13 @@
 #include <Servo.h>
 
 /***************************************************
-/ mymindsi.com
+/ Example provided by MINDS-i
+/ Try checking out our arduino resource guide at
+/ http://mindsieducation.com/programming-resources
+/ Questions? Concerns? Bugs? email code@mymindsi.com
 /
-/ Line Following Robot - Ping stop
-/
-/ This code will Stop and turn whenever something blocks its path
+/ This example expects 2 servos in pins 4 and 5
+/ and a ping sensor in pin 10
 /***************************************************/
 
 Servo leftServo, rightServo;
@@ -24,8 +26,8 @@ void setup() {
 
 void loop() {
   if (getPing(10) < hazardDist) {
-
-    leftServo.write(center); //liberal coasting to prevent brownouts
+    //liberal coasting to prevent brownouts
+    leftServo.write(center);
     rightServo.write(center);
     delay(500);
 
@@ -36,7 +38,8 @@ void loop() {
     leftServo.write(center);
     rightServo.write(center);
     delay(250);
-  } else { //resume driving straight
+  } else {
+    //resume driving straight
     leftServo.write(0);
     rightServo.write(180);
   }

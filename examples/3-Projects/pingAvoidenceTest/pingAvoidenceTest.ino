@@ -1,13 +1,20 @@
 #include <Servo.h>
 #include <MINDSi.h>
 
-/*
-This code uses a radio plugged in to RadioPin[] to drive around, but uses 5 ping
-sensors to interefere and avoid walls
-*/
+/***************************************************
+/ Example provided by MINDS-i
+/ Try checking out our arduino resource guide at
+/ http://mindsieducation.com/programming-resources
+/ Questions? Concerns? Bugs? email code@mymindsi.com
+/
+/ This example will drive with radio control until
+/ ping sensors detect danger, in which case they will
+/ override the radio input and turn the vehicle
+/ away from the obstacle
+/***************************************************/
 
-const uint8_t  PingPin[] = {A4, A1, A0, A2, A3}; //left to right
-const uint8_t ServoPin[] = {12, 11, 8};//drive, steer, backs, outputs 1,2,3 resp
+const uint8_t  PingPin[] = {7, 8, 9, 10, 11}; //left to right
+const uint8_t ServoPin[] = {4, 5, 6};//drive, steer, backsteer
 const uint8_t RadioPin[] = {2, 3}; //drive, steer
 const uint16_t 	  warn[] = {1000, 1400, 2500, 1400, 1000};
 
@@ -32,6 +39,7 @@ void setup() {
   uTime = millis();
   getRadio(RadioPin[0]);
 }
+
 void loop() {
   if (uTime <= millis()) {
     uTime += 100;
@@ -39,12 +47,14 @@ void loop() {
     navigate();
   }
 }
+
 void checkPing() {
   ping[pIter] = getPing(PingPin[pIter]);
   pIter++;
   pIter = pIter % 5;
   if (ping[pIter] < warn[pIter]) oTime = millis();
 }
+
 void navigate() {
   if (oTime != 0) {
     if (nTime == 0) {
@@ -74,20 +84,23 @@ void navigate() {
     }
 
     outputAngle = toDeg(atan2(y, x)) + 90;
-    constrain(outputAngle, 45, 135);
+    outputAngle = constrain(outputAngle, 45, 135);
     output(getRadio(RadioPin[0]), outputAngle);
   }
 }
+
 void output(uint8_t drive, uint8_t steer) {
   servo[0].write(drive);
   servo[1].write(steer);
   servo[2].write(180 - steer);
 }
+
 double toRad(double degrees) {
   degrees /= 180.l;
   degrees *= PI;
   return degrees;
 }
+
 double toDeg(double radians) {
   radians /= PI;
   radians *= 180.l;

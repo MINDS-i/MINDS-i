@@ -2,21 +2,19 @@
 #include <Servo.h>
 
 /***************************************************
-/MINDS-i Ping Calibration. mymindsi.com
+/ Example provided by MINDS-i
+/ Try checking out our arduino resource guide at
+/ http://mindsieducation.com/programming-resources
+/ Questions? Concerns? Bugs? email code@mymindsi.com
 /
-/
-/This Ping Calibration code is used to test
-/and adjust your ping sensor as well as to establish
-/the measurement that it’s reading. Because some sensors
-/vary, this calibration is recommended before applying
-/it in your code to avoid malfunctions.
-/
-/To learn more about the ping sensor visit:
-/http://arduino.cc/en/Tutorial/Ping
+/ This code expects a ping sensor plugged into pin 10
+/ Or, Swap out the comments below to read three sensors
+/ on pins 9,10, and 11
 /***************************************************/
 
 void setup() {
-  Serial.begin(9600); //start a serial connection
+  //start a serial connection
+  Serial.begin(9600);
 }
 
 void loop() {

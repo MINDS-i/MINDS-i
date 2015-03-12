@@ -2,33 +2,38 @@
 #include <Servo.h>
 
 /***************************************************
-/ MINDS-i Radio Drive Application. mymindsi.com
+/ Example provided by MINDS-i
+/ Try checking out our arduino resource guide at
+/ http://mindsieducation.com/programming-resources
+/ Questions? Concerns? Bugs? email code@mymindsi.com
 /
-/This Simple Radio Drive Application code
-/is a basic example of how to incorporate
-/your Radio Transmitter and Receiver in
-/the Arduino code.  In this code your rover
-/will be controlled manually by your radio
-/transmitter.
+/ This example expects an ESC plugged into pin 4
+/ A servo plugged into pin 5
+/ and a radio plugged into pins 2 and 3
 /***************************************************/
 
 Servo drive, steer;
 int driveSig, steerSig;
 
 void setup() {
-  drive.attach(4); //set a pin for the ESC/steering servo to use
+  //set a pin for the ESC/steering servo to use
+  drive.attach(4);
   steer.attach(5);
 
-  drive.write(90); //set the output for the ESC/servo
+  //set the initial throttle/direction for the ESC/servo
+  drive.write(90);
   steer.write(90);
 
-  delay(2000); //delay 2 seconds for arming
+  //delay 2 seconds for arming
+  delay(2000);
 }
 
 void loop() {
+  //store the inbound radio value
   driveSig = getRadio(2);
   steerSig = getRadio(3);
 
-  drive.write( driveSig );  //set the servo to the inbound radio value
+  //set the ESC/servo to the inbound radio value
+  drive.write( driveSig );
   steer.write( steerSig );
 }

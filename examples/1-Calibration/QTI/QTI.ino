@@ -2,27 +2,27 @@
 #include <Servo.h>
 
 /***************************************************
-/MINDS-i QTI Calibration. mymindsi.com
+/ Example provided by MINDS-i
+/ Try checking out our arduino resource guide at
+/ http://mindsieducation.com/programming-resources
+/ Questions? Concerns? Bugs? email code@mymindsi.com
 /
-/This QTI Calibration code is used to test
-/and adjust your QTI sensor as well as to establish
-/the measurement that it’s reading. Because each sensor
-/varies, this calibration is recommended before applying
-/it in your code to avoid malfunctions.
-/
-/To learn more about the QTI sensor visit:
-/http://www.parallax.com/StoreSearchResults/tabid/768/txtSearch/QTI/List/0/SortField/4/ProductID/100/Default.aspx
+/ This code expects a QTI sensor plugged into pin A0
+/ Or, Swap out the comments below to read three sensors
+/ on pins A0, A1, and A2
 /***************************************************/
 
 int val;
 
 void setup() {
-  Serial.begin(9600); //start a serial connection
+  //start a serial connection
+  Serial.begin(9600);
 }
 
 void loop() {
-  val = QTI(A0);  //save the value read by the QTI sensor on analog pin 0
-  Serial.println(val);  //send a string or value on the serial connection
+  //save the value read by the QTI sensor on analog pin 0; then send
+  val = QTI(A0);
+  Serial.println(val);
 
   //optional code for displaying three QTI sensors, make sure the previous code
   //is commented out when using the code below.

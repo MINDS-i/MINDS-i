@@ -1,15 +1,18 @@
 #include <Servo.h>
 #include <MINDSi.h>
-/***************************************************
-/MINDS-i Calibration. mymindsi.com
-/
-/Hex walker robot example
-/
-/this code will walk until one of its sensors hits something
-/Then it will back up, turn, and march forward again.
-/***************************************************/
-Servo leftServo, rightServo;
 
+/***************************************************
+/ Example provided by MINDS-i
+/ Try checking out our arduino resource guide at
+/ http://mindsieducation.com/programming-resources
+/ Questions? Concerns? Bugs? email code@mymindsi.com
+/
+/ This example expects 2 servos in pins 4 and 5
+/ this code will walk until one of its sensors hits something
+/ Then it will back up, turn, and march forward again.
+/***************************************************/
+
+Servo leftServo, rightServo;
 
 void setup() {
   leftServo.attach(4);

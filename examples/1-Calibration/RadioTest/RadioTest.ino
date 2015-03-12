@@ -2,24 +2,25 @@
 #include <Servo.h>
 
 /***************************************************
-/MINDS-i Radio Calibration. mymindsi.com
+/ Example provided by MINDS-i
+/ Try checking out our arduino resource guide at
+/ http://mindsieducation.com/programming-resources
+/ Questions? Concerns? Bugs? email code@mymindsi.com
 /
-/
-/This Radio Test Calibration code is used to test
-/and adjust your Radio transmitter and to establish
-/the signal that your radio is sending.
-/due to hardware limitations, receiving radio signals
-/on pins other than 2 and/or 3 will be more twitchy than
-/usual
+/ This code expects a radio plugged into pin 2
 /***************************************************/
 
 int val;
 
 void setup() {
-  Serial.begin(9600); //start a serial connection
+  //start a serial connection
+  Serial.begin(9600);
 }
 
 void loop() {
-  val = getRadio(2);  //read the value being sent on pin 2
-  Serial.println(val);  //send a string or value on the serial connection
+  //read the value being sent on pin 2
+  val = getRadio(2);
+
+  //transmit over the serial connection
+  Serial.println(val);
 }

@@ -2,12 +2,13 @@
 #include <Servo.h>
 
 /***************************************************
-/MINDS-i Accelerometer Application. mymindsi.com
+/ Example provided by MINDS-i
+/ Try checking out our arduino resource guide at
+/ http://mindsieducation.com/programming-resources
+/ Questions? Concerns? Bugs? email code@mymindsi.com
 /
-/This Accelerometer Application code is a basic example
-/of how to incorporate your Accelerometer in the Arduino
-/code. In this code your rover will drive straight until
-/it tips over in which case it will stop.
+/ This code expects your accelerometer to be wired
+/ with X->A0, y->A1, z->A0
 /***************************************************/
 
 const int downReading = 700;
@@ -15,22 +16,26 @@ Servo drive, steer;
 float Z;
 
 void setup() {
-  drive.attach(4); //set a pin for the ESC/steering servo to use
+  //set a pin for the ESC/steering servo to use
+  drive.attach(4);
   steer.attach(5);
 
-  drive.write(90); //set the output for the ESC/servo
+  //set the initial throttle/direction for the ESC/servo
+  drive.write(90);
   steer.write(90);
 
-  delay(2000); //delay 2 seconds for arming
+  //delay 2 seconds for ESC arming
+  delay(2000);
 }
 
 void loop() {
-  Z = analogRead(A2) / 1024; //store the value read
+  //store the value read
+  Z = analogRead(A2) / 1024;
 
   //if less than half of normal G's is read on the Z axis (up/down), stop
   if (Z < downReading) {
     drive.write(90);
   } else {
-    drive.write(100); //otherwise drive
+    drive.write(100);
   }
 }
