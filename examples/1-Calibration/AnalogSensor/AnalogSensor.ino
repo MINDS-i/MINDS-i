@@ -2,22 +2,24 @@
 #include <Servo.h>
 
 /***************************************************
-/MINDS-i Analog Sensor Calibration. mymindsi.com
+/ Example provided by MINDS-i
+/ Try checking out our arduino resource guide at
+/ http://mindsieducation.com/programming-resources
+/ Questions? Concerns? Bugs? email code@mymindsi.com
 /
-/This code will send an analog sensor's value to the serial terminal
-/the sensor should be plugged in to pin A0
-/
-/To learn more about the analog sensors visit:
-/http://arduino.cc/playground/Main/InterfacingWithHardware
+/ This code expects a sensor to be plugged in to A0
 /***************************************************/
 
 int val;
 
 void setup() {
-  Serial.begin(9600);  //start a serial connection
+  //start a serial connection
+  Serial.begin(9600);
 }
 
 void loop() {
-  val = analogRead(A0); //read in the value on analog pin 0
-  Serial.println(val);  //send a string or value on the serial connection
+  //read in the value on analog pin 0
+  val = analogRead(A0);
+  //send a string or value on the serial connection
+  Serial.println(val);
 }

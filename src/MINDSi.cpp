@@ -74,8 +74,7 @@ int getRadioPulse(int pin, bool interrupt){
 int getRadio(int pin, int min, int max, bool interrupt){
 	int sig = map(getRadioPulse(pin,interrupt), radio_min_int, radio_max_int, 
 												min, 		   max);
-	constrain(sig, 0, 180);
-	return sig;
+	return constrain(sig, 0, 180);
 }
 
 bool isRadioOn(int pin, uint32_t timeoutMicros){

@@ -2,37 +2,48 @@
 #include <Servo.h>
 
 /***************************************************
-/ MINDS-i ESC Application. mymindsi.com
+/ Example provided by MINDS-i
+/ Try checking out our arduino resource guide at
+/ http://mindsieducation.com/programming-resources
+/ Questions? Concerns? Bugs? email code@mymindsi.com
 /
-/This ESC Application code is a basic example
-/of how to incorporate your ESC in the Arduino
-/code.  In this code your rover will drive forward
-/for a certain time, stop and drive back in reverse
-/for the same amount as the previous time.
+/ This example expects an ESC plugged into pin 4
+/ It will also center a servo in pin 5 for convenience
 /***************************************************/
 
 Servo drive, steer;
 
 void setup() {
-  drive.attach(4); //set a pin for the ESC/steering servo to use
+  //set a pin for the ESC/steering servo to use
+  drive.attach(4);
   steer.attach(5);
 
-  drive.write(90); //set the output for the ESC/servo
+  //set the output for the ESC/servo
+  drive.write(90);
   steer.write(90);
 
-  delay(2000); //delay 2 seconds for arming
+  //delay 2 seconds for arming
+  delay(2000);
 }
 
 void loop() {
-  drive.write(100); //drive forward one second
+  //drive forward one second
+  drive.write(100);
   delay(1000);
 
-  drive.write(0); //brake and wait
+  //brake for 1 second
+  drive.write(45);
   delay(1000);
 
-  drive.write(95); //dissengage brakes
-  delay(150);
+  //disengage the brakes
+  drive.write(90);
+  delay(50);
 
-  drive.write(80); //drive backward one second
-  delay(1500);
+  //drive backward one second
+  drive.write(80);
+  delay(1000);
+
+  //coast for 1 second
+  drive.write(90);
+  delay(1000);
 }

@@ -2,34 +2,40 @@
 #include <Servo.h>
 
 /***************************************************
-/ MINDS-i Ping Application. mymindsi.com
+/ Example provided by MINDS-i
+/ Try checking out our arduino resource guide at
+/ http://mindsieducation.com/programming-resources
+/ Questions? Concerns? Bugs? email code@mymindsi.com
 /
-/This Ping Application code is a basic example
-/of how to incorporate your PING sensor in the
-/Arduino code.  In this code your rover will
-/drive until it sees an object with the PING
-/sensor and then it will stop.
+/ This example expects an ESC plugged into pin 4
+/ A servo plugged into pin 5
+/ and a ping sensor in pin 10
 /***************************************************/
 
 Servo drive, steer;
 
 void setup() {
-  drive.attach(4); //set a pin for the ESC/steering servo to use
+  //set a pin for the ESC/steering servo to use
+  drive.attach(4);
   steer.attach(5);
 
-  drive.write(90); //set the output for the ESC/servo
+  //set the initial throttle/direction for the ESC/servo
+  drive.write(90);
   steer.write(90);
 
-  delay(2000); //delay 2 seconds for arming
+  //delay 2 seconds for arming
+  delay(2000);
 
-  steer.write(180);
+  //turn the wheel
+  steer.write(120);
 }
 
 void loop() {
   //if there is no room in front, stop
   if (getPing(10) < 1500) {
     drive.write(90);
-  } else {  //otherwise go forward
+  } else {
+    //otherwise go forward
     drive.write(100);
   }
 }

@@ -2,28 +2,33 @@
 #include <Servo.h>
 
 /***************************************************
-/ MINDS-i QTI Application. mymindsi.com
+/ Example provided by MINDS-i
+/ Try checking out our arduino resource guide at
+/ http://mindsieducation.com/programming-resources
+/ Questions? Concerns? Bugs? email code@mymindsi.com
 /
-/This QTI Application code is a basic example
-/of how to incorporate your QTI sensor in the
-/Arduino code.  In this code your rover will
-/follow a black line.
+/ This example expects an ESC plugged into pin 4
+/ A servo plugged into pin 5
+/ and a trio of QTI's in A0, A1, and A2
 /***************************************************/
 
 Servo steer, drive;
 
 const int threshold = 300;
 
-void setup()
-{
-  drive.attach(4); //set a pin for the ESC/steering servo to use
+void setup() {
+  //set a pin for the ESC/steering servo to use
+  drive.attach(4);
   steer.attach(5);
 
-  drive.write(90); //set the output for the ESC/servo
+  //set the initial throttle/direction for the ESC/servo
+  drive.write(90);
   steer.write(90);
 
-  delay(2000); //delay 2 seconds for arming
+  //delay 2 seconds for arming
+  delay(2000);
 
+  //start driving forward slowly
   drive.write(100);
 }
 

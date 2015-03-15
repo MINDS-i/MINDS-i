@@ -2,13 +2,13 @@
 #include <Servo.h>
 
 /***************************************************
-/ mymindsi.com
+/ Example provided by MINDS-i
+/ Try checking out our arduino resource guide at
+/ http://mindsieducation.com/programming-resources
+/ Questions? Concerns? Bugs? email code@mymindsi.com
 /
-/ Line Following Robot
-/
-/This code will follow a line and stop in front of obsticles
-/it uses a time-adjusted exponential running average to smooth out
-/motion and prevent wobbling.
+/ This example expects 2 servos in pins 4 and 5
+/ and three QTI sensors in pins A0, A1, and A2
 /***************************************************/
 
 Servo leftServo, rightServo;
@@ -24,9 +24,7 @@ double adj;
 const int center =  90;
 
 void setup() {
-  Serial.begin(115200);
-
-  leftServo.attach(5); //set a pin for a servo/ESC to use
+  leftServo.attach(5);
   rightServo.attach(4);
 
   leftServo.write(center);

@@ -2,11 +2,14 @@
 #include <Servo.h>
 
 /***************************************************
-/ MINDS-I Projects. mymindsi.com
+/ Example provided by MINDS-i
+/ Try checking out our arduino resource guide at
+/ http://mindsieducation.com/programming-resources
+/ Questions? Concerns? Bugs? email code@mymindsi.com
 /
-/This advanced radio drive project builds upon its
-/simpler version with a running average, motor curvers
-/and a deadband
+/ This example expects an ESC plugged into pin 4
+/ A servo plugged into pin 5
+/ and a radio plugged into pins 2 and 3
 /***************************************************/
 
 Servo steer, drive;

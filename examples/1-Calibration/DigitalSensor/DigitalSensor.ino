@@ -2,23 +2,24 @@
 #include <Servo.h>
 
 /***************************************************
-/MINDS-i Digital Sensor Calibration. mymindsi.com
+/ Example provided by MINDS-i
+/ Try checking out our arduino resource guide at
+/ http://mindsieducation.com/programming-resources
+/ Questions? Concerns? Bugs? email code@mymindsi.com
 /
-/This Digital Sensor Calibration code is used to test
-/and adjust various digital sensors. The sensors should
-/be plugged into pin 3
-/
-/To learn more about the digital sensors visit:
-/http://arduino.cc/playground/Main/InterfacingWithHardware
+/ This code expects a sensor to be plugged into pin 3
 /***************************************************/
 
 int val;
 
 void setup() {
-  Serial.begin(9600);  //start a serial connection
+  //start a serial connection
+  Serial.begin(9600);
 }
 
 void loop() {
-  val = digitalRead(3);  //read in the digital value on pin 3
-  Serial.println(val);  //send a string or value on the serial connection
+  //read in the digital value on pin 3
+  val = digitalRead(3);
+  //send a string or value on the serial connection
+  Serial.println(val);
 }

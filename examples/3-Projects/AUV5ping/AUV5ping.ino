@@ -2,36 +2,34 @@
 #include <MINDSi.h>
 
 /***************************************************
-/ MINDS-I Projects. mymindsi.com
+/ Example provided by MINDS-i
+/ Try checking out our arduino resource guide at
+/ http://mindsieducation.com/programming-resources
+/ Questions? Concerns? Bugs? email code@mymindsi.com
 /
-/This example will drive until it sees a wall in front of it
-/and sends a signal to stop. then it will back up in the direction
-/with more space until it sees room to move forward.
-/It also steers away from walls when approaching at a shallow angle.
-/Attach the drive speed controller to pin 4
-/Attach the front steering servo to pin 5
-/Attach the back steering servo to pin 6 (optional)
-/Attach the Pings as follow:
-/leftmost (west):11 left:10 center:9 right:8 rightmost (east):7
-/
-/In addition, if a radio is plugged in and turned on this example
-/ will drive manually and return to automatic when it is turned on.
+/ This example expects an ESC plugged into pin 4
+/ A servo plugged into pin 5
+/ and ping sensors in pins 9, 10, and 11
+/ optionally, IR sensors in pins 12 and 13
 /***************************************************/
 
+const bool IR_ENABLED    = false;
+const int  CENTER        = 90;
+const int  TURN          = 45;
+const int  FWDSPEED      = 115;
+const int  REVSPEED      = 70;
+const int  BACKUP_TIME   = 2000;
+const int  SIDE_RANGE    = 4000;
+const int  PING_PINS[]   = {      7,      8,      9,     10,     11};
+const int  HAZARD_DIST[] = {    650,    800,   3000,    800,    650};
+const int                    WEST=0, LEFT=1,  FWD=2,RIGHT=3, EAST=4;
+
 Servo drive, frontsteer, backsteer;
-unsigned long startTime;
-int east, right, front, left, west;
-int steervalue;
-
-const int CENTER = 90;
-const int TURN = 45;
-const int FWDSPEED = 115;
-const int REVSPEED = 70;
-
-//west,left,center,right,east
-const int HAZARD_DIST[] = {650, 800, 3000, 800, 650}; //Raise these on 6x6's
+int ping[5];
 
 void setup() {
+  Serial.begin(9600);
+
   pinMode(13, INPUT);
   pinMode(12, INPUT);
 
@@ -49,58 +47,63 @@ void loop() {
   if (isRadioOn(2)) {
     drive.write(getRadio(2));
     steer(getRadio(3));
+  } else {
+    autodrive();
   }
-  else autodrive();
 }
 
 void autodrive() {
-  east = getPing(7);
-  west = getPing(11);
-  delay(10);
-  right = getPing(8);
-  left = getPing(10);
-  delay(10);
-  front = getPing(9);
-  delay(10);
+  bool danger = false;
+  for (int i = 0; i < 5; i++) {
+    ping[i] = getPing(PING_PINS[i]);
+    if (ping[i] < HAZARD_DIST[i]) danger = true;
+    delay(10);
+  }
 
-  if (  west  < HAZARD_DIST[0] ||
-        left  < HAZARD_DIST[1] ||
-        front < HAZARD_DIST[2] ||
-        right < HAZARD_DIST[3] ||
-        east  < HAZARD_DIST[4] ) {
-    //wait for the vehicle to stop
+  if (danger) {
+    //coast down for two seconds
     drive.write(90);
-    delay(750);
+    delay(2000);
 
     //turn in the most favorable direction
-    if (left > right) steer(CENTER + TURN);
-    else steer(CENTER - TURN);
+    if (ping[LEFT] > ping[RIGHT]) {
+      steer(CENTER + TURN);
+    } else {
+      steer(CENTER - TURN);
+    }
+
+    //prime reverse
+    drive.write(85);
+    delay(50);
+    drive.write(90);
     delay(50);
 
-    //back up until enough room is found
+    //back up for BACKUP_TIME milliseconds
     drive.write(REVSPEED);
-    startTime = millis();
-    while ((millis() - startTime) < 1500) {
-      //Stop the backup loop if sensors detect problems
-      //if (!digitalRead(13) | !digitalRead(12)) break; //IR disabled
-      if (getPing(9) < 5500) break;
-      delay(10);
+    uint32_t endTime = millis() + BACKUP_TIME;
+    while (millis() < endTime) {
+      //leave the loop if backup sensors see a wall
+      if ( IR_ENABLED && (!digitalRead(13) | !digitalRead(12)) ) break;
     }
-    drive.write(90);
 
-    //center the wheels and resume driving
+    //coast to a stop
+    drive.write(90);
     steer(CENTER);
     delay(1000);
-    drive.write(FWDSPEED);
   }
   else {
-    //turn away from near walls
-    int lAve = (left + west / 2);
-    int rAve = (right + east / 2);
-    constrain(left, 0, 4000);
-    constrain(right,0, 4000);
-    steervalue = map(lAve - rAve, -4000, 4000, CENTER + TURN, CENTER - TURN);
-    steer(steervalue);
+    //calculate average distance on each side
+    long left  = min(ping[LEFT] , ping[WEST]);
+    long right = min(ping[RIGHT], ping[EAST]);
+    left  = constrain(left , 0, SIDE_RANGE);
+    right = constrain(right, 0, SIDE_RANGE);
+
+    //map the difference in lAve and rAve from +/- SIDE_RANGE to +/- TURN
+    long steerValue = map( (left - right),
+                           -SIDE_RANGE, SIDE_RANGE,
+                           -TURN,       TURN);
+
+    steer(CENTER - steerValue);
     drive.write(FWDSPEED);
   }
 }
