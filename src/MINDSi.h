@@ -6,7 +6,7 @@
 
 /*
 MINDSi.h ----- Library for use with mindsi products
-Created by MINDS-i, INC. 
+Created by MINDS-i, INC.
 Released into the public domain */
 
 int getPing(int pin, uint32_t maxMicros = 20000);
