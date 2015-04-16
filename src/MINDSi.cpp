@@ -1,21 +1,35 @@
+/* Copyright 2015 MINDS-i, INC.
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
 #include "MINDSi.h"
 
 namespace { //make sure these vars/functions aren't visible outside
 	const uint32_t radio_timeout =32000;
 	const uint32_t radio_min_int = 1000;
 	const uint32_t radio_max_int = 2000;
-	
+
 	volatile uint32_t	pStart[EXTERNAL_NUM_INTERRUPTS];
 	volatile uint32_t	pTime [EXTERNAL_NUM_INTERRUPTS];
 	volatile int8_t		interruptPin[EXTERNAL_NUM_INTERRUPTS];
 	boolean				interruptOn[EXTERNAL_NUM_INTERRUPTS];
-	
+
 	boolean inline isIntOn(int interrupt){
 		//the registers differ too much on each chip to read directly
 		return interruptOn[interrupt];
 	}
-	
-	
+
 	template<int num>
 	void inline iFunc(void){
 		if(fastDigitalRead(interruptPin[num])) pStart[num] = micros();
@@ -45,7 +59,7 @@ namespace { //make sure these vars/functions aren't visible outside
 
 //normal digitalRead is too slow for Interrupt handlers
 inline bool fastDigitalRead(int pin){
-	return *portInputRegister(digitalPinToPort(pin)) 
+	return *portInputRegister(digitalPinToPort(pin))
 			& digitalPinToBitMask(pin);
 }
 
@@ -72,7 +86,7 @@ int getRadioPulse(int pin, bool interrupt){
 }
 
 int getRadio(int pin, int min, int max, bool interrupt){
-	int sig = map(getRadioPulse(pin,interrupt), radio_min_int, radio_max_int, 
+	int sig = map(getRadioPulse(pin,interrupt), radio_min_int, radio_max_int,
 												min, 		   max);
 	return constrain(sig, 0, 180);
 }
