@@ -64,8 +64,8 @@ inline bool fastDigitalRead(int pin){
 }
 
 int getRadioPulse(int pin, bool interrupt){
-	int pulse;
-	int iNum = digitalPinToInterrupt(pin);
+	int pulse = 0;
+	int iNum  = digitalPinToInterrupt(pin);
 
 	//get signal width
 	if(interrupt && iNum!=NOT_AN_INTERRUPT){
@@ -96,7 +96,7 @@ bool isRadioOn(int pin, uint32_t timeoutMicros){
 	if( iNum!=NOT_AN_INTERRUPT && isIntOn(iNum) ){
 		return (micros() < pStart[iNum] + timeoutMicros);
 	} else {
-		int pulse = pulseIn(pin, HIGH, timeoutMicros);
+		uint16_t pulse = pulseIn(pin, HIGH, timeoutMicros);
 		return (pulse > radio_min_int && pulse < radio_max_int);
 	}
 }
