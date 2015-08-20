@@ -78,5 +78,5 @@ void output() {
   Lout = ( Lout * adj ) + ( Lset * (1 - adj) );
 
   left.write(Lout + leftCenter);
-  right.write(Rout+ rightCenter);
+  right.write(Rout + rightCenter);
 }
