@@ -61,6 +61,7 @@ void setup() {
 }
 
 void loop() {
+  if(!Serial) setup(); //reset for leonardos that have had their serial port closed
   switch (Serial.read()) {
     case 'a':
     case 'A':
