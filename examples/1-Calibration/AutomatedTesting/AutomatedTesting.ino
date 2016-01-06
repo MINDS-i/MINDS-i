@@ -6,7 +6,7 @@
 #include <EEPROM.h>
 #include "pins_arduino.h"
 
-/***************************************************
+/*******************************************************
 / Example provided by MINDS-i
 / Try checking out our arduino resource guide at
 / http://mindsieducation.com/programming-resources
@@ -19,7 +19,7 @@
 / QTI Sensors
 / Ping Sensors
 / And reading/clearing EEPROM
-/***************************************************/
+/*******************************************************/
 
 const int dQTIs[3] = {A0, A1, A2};
 const int dPing[3] = {9 , 10, 11};
@@ -54,12 +54,14 @@ int getIntQTI(int pin);
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("\nEnter the character for what you want to do.");
+  while(!Serial) /*nop*/; //wait for leonardo to connect to PC
+  delay(500);
   menu();
   Serial.flush();
 }
 
 void loop() {
+  if(!Serial) setup(); //reset for leonardos that have had their serial port closed
   switch (Serial.read()) {
     case 'a':
     case 'A':
@@ -109,8 +111,9 @@ void loop() {
 
 void menu() {
   Serial.println(
+    "\nEnter the character for what you want to do."
     "\n(S)elf test; (Q)TIs; (P)ings; (D)igitals;"
-    "(A)nalogs; (E)EPROM; (M)otor; (R)adio");
+    " (A)nalogs; (E)EPROM; (M)otor; (R)adio");
 }
 
 void selfTest() {
