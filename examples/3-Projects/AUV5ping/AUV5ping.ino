@@ -109,7 +109,7 @@ void autodrive() {
 }
 
 //methods are used to save space on simple, but often repeated lines of code
-void inline steer(int out) {
+void steer(int out) {
   frontsteer.write(out);
   backsteer.write(180 - out);
 }
