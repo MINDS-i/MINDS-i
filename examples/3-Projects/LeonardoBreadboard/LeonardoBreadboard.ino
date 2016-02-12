@@ -35,7 +35,7 @@ float RPMtoMPH = ((5. *PI)*60.)/(63360.*(37./13.));
 float STPtoFeet = (5. *PI)/(12.*100.*(37./13.));
 
 const int numWindows = 8;
-void (*window[numWindows])() = { pingDetail, pingDetail, pingDetail, pingExpo, Auto, Manual, QTI, IR};
+void (*window[numWindows])() = { &pingDetail, &pingExpo, &Auto, &Manual, &QTI, &IR};
 enum charSet currentCharSet;
 enum buttonSet currentButton;
 bool onRise=false, longRise = false;
@@ -291,7 +291,6 @@ void AutonoDrive(String& msg){
 	const static int TURN = 45;
 	const static int FWDSPEED = 108;
 	const static int REVSPEED = 75;
-	const static int WAIT = 6;
 	static int rightc, right;
 	static int leftc, left;
 	static int frontc, front;
@@ -353,7 +352,7 @@ void lineFollow(){
 	else if(QTI(QTIPins[2]) < threshold) steer.write(135);
 }
 //////////////////////////////////////////////////
-void inline writeToChars(byte in[][8]){
+void writeToChars(byte in[][8]){
 	for(int i=0; i< 8; i++) lcd.createChar(i, in[i]);
 }
 
@@ -397,6 +396,8 @@ void setCustomChars(enum charSet set){
 					lcd.createChar(clmn, map);
 				}
 				lcd.createChar(6, degree);
+				break;
+			default:
 				break;
 		}
 		currentCharSet = set;
@@ -492,5 +493,5 @@ void printInPlace(int places, double number){
 	printInPlace(places, (float) number);
 }
 
-void inline cap(int&   var, long  max){ if(var > max) var = max; }
-void inline cap(float& var, float max){ if(var > max) var = max; }
+void cap(int&   var, long  max){ if(var > max) var = max; }
+void cap(float& var, float max){ if(var > max) var = max; }
