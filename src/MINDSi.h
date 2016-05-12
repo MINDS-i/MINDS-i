@@ -22,7 +22,7 @@
 int getPing(int pin, uint32_t maxMicros = 20000);
 int QTI(int pin, uint32_t maxLoops = 10000);
 
-bool isRadioOn(int pin, uint32_t timeoutMicros = 5000);
+bool isRadioOn(int pin, uint32_t timeoutMicros = 32000);
 int getRadioPulse(int pin, bool interrupt);
 int getRadio(int pin, int min = 45, int max = 135, bool interrupt = true);
 
