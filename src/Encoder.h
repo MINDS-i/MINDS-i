@@ -100,7 +100,7 @@ int16_t  encoder::tickCount = 0;
 int16_t  encoder::lastCount = 0;
 uint32_t encoder::time = 0;
 int16_t* encoder::avptr = average;
-const float encoder::TpR = 100.0f; //ticks per revolution
+const float encoder::TpR = 1.0f; //ticks per revolution
 const float encoder::rpmConvFactor =
 			//ms per min  / (samples per avsum)*(ms per sample)*(ticks per rev)
 			(60.f*1000.f) / ((encoder::sampleSize)      *(encoder::timestep)     * 100.0f);
