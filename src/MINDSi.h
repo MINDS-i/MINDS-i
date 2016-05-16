@@ -1,4 +1,4 @@
-/* Copyright 2015 MINDS-i, INC.
+/* Copyright 2015-16 MINDS-i, INC.
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -19,13 +19,30 @@
 #include "Arduino.h"
 #include "wiring_private.h"
 
-int getPing(int pin, uint32_t maxMicros = 20000);
-int QTI(int pin, uint32_t maxLoops = 10000);
+namespace MINDSi {
+    /* maximum microseconds without a pulse before considering the signal off */
+    constexpr uint32_t radio_pulse_timeout = 20000;
+    /* maximum microseconds before considering a ping sensor reading lost*/
+    constexpr uint32_t ping_reading_timeout = 20000;
+    /* maximum loop count for a QTI sensor reading */
+    constexpr uint32_t QTI_reading_timeout = 10000;
+    /* high time in microseconds of a radio signal at 0 degrees */
+    constexpr uint32_t radio_min_us = 600;
+    /* high time in microseconds of a radio signal at 180 degrees */
+    constexpr uint32_t radio_max_us = 2400;
+}
 
-bool isRadioOn(int pin, uint32_t timeoutMicros = 32000);
+/* */
+int getPing(int pin, uint32_t maxMicros = MINDSi::ping_reading_timeout);
+/* */
+int QTI(int pin, uint32_t maxLoops = MINDSi::QTI_reading_timeout);
+/* */
+bool isRadioOn(int pin, uint32_t timeoutMicros = MINDSi::radio_pulse_timeout);
+/* */
 int getRadioPulse(int pin, bool interrupt);
-int getRadio(int pin, int min = 45, int max = 135, bool interrupt = true);
-
+/* */
+int getRadio(int pin, bool interrupt = true);
+/* */
 bool fastDigitalRead(int pin);
 
 #endif

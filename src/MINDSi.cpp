@@ -15,11 +15,9 @@
 
 #include "MINDSi.h"
 
-namespace { //make sure these vars/functions aren't visible outside
-	const uint32_t radio_timeout =32000;
-	const uint32_t radio_min_int = 1000;
-	const uint32_t radio_max_int = 2000;
+using namespace MINDSi;
 
+namespace { //make sure these vars/functions aren't visible outside
 	volatile uint32_t	pStart[EXTERNAL_NUM_INTERRUPTS];
 	volatile uint32_t	pTime [EXTERNAL_NUM_INTERRUPTS];
 	volatile int8_t		interruptPin[EXTERNAL_NUM_INTERRUPTS];
@@ -78,16 +76,16 @@ int getRadioPulse(int pin, bool interrupt){
 			pulse = pTime[iNum];
 		}
 	} else {
-		pulse = pulseIn(pin, HIGH, radio_timeout);
+		pulse = pulseIn(pin, HIGH, radio_pulse_timeout);
 	}
 
-	if(pulse == 0) pulse = (radio_min_int+radio_max_int)/2;
+	if(pulse == 0) pulse = (radio_min_us+radio_max_us)/2;
 	return pulse;
 }
 
-int getRadio(int pin, int min, int max, bool interrupt){
-	int sig = map(getRadioPulse(pin,interrupt), radio_min_int, radio_max_int,
-												min, 		   max);
+int getRadio(int pin, bool interrupt){
+	int sig = map(getRadioPulse(pin,interrupt),
+					radio_min_us, radio_max_us, 0, 180);
 	return constrain(sig, 0, 180);
 }
 
@@ -95,10 +93,8 @@ bool isRadioOn(int pin, uint32_t timeoutMicros){
 	int iNum = digitalPinToInterrupt(pin);
 	if( iNum!=NOT_AN_INTERRUPT && isIntOn(iNum) ){
 		return (micros() < pStart[iNum] + timeoutMicros);
-	} else {
-		uint16_t pulse = pulseIn(pin, HIGH, timeoutMicros);
-		return (pulse > radio_min_int && pulse < radio_max_int);
 	}
+	return pulseIn(pin, HIGH, timeoutMicros) != 0;
 }
 
 int getPing(int pin, uint32_t maxMicros){
