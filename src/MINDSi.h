@@ -20,29 +20,40 @@
 #include "wiring_private.h"
 
 namespace MINDSi {
-    /* maximum microseconds without a pulse before considering the signal off */
-    constexpr uint32_t radio_pulse_timeout = 20000;
-    /* maximum microseconds before considering a ping sensor reading lost*/
-    constexpr uint32_t ping_reading_timeout = 20000;
-    /* maximum loop count for a QTI sensor reading */
-    constexpr uint32_t QTI_reading_timeout = 10000;
-    /* high time in microseconds of a radio signal at 0 degrees */
-    constexpr uint32_t radio_min_us = 600;
-    /* high time in microseconds of a radio signal at 180 degrees */
-    constexpr uint32_t radio_max_us = 2400;
+    /** maximum microseconds without a pulse before considering the signal off*/
+    constexpr uint32_t RADIO_PULSE_TIMEOUT = 80000;
+    /** maximum microseconds before considering a ping sensor reading lost */
+    constexpr uint16_t PING_READING_TIMEOUT = 20000;
+    /** maximum loop count for a QTI sensor reading */
+    constexpr uint16_t QTI_READING_TIMEOUT = 10000;
+    /** high time in microseconds of a radio signal at 0 degrees */
+    constexpr uint16_t RADIO_MIN_US = 600;
+    /** high time in microseconds of a radio signal at 180 degrees */
+    constexpr uint16_t RADIO_MAX_US = 2400;
+    /** signal to return from getRadio when nothing is received */
+    constexpr uint16_t DEFAULT_RADIO_SIGNAL = 90;
+    /** returned by getRadioPulse when no radio pulse is active */
+    constexpr uint16_t NO_PULSE = 0xffff;
 }
 
-/* */
-int getPing(int pin, uint32_t maxMicros = MINDSi::ping_reading_timeout);
-/* */
-int QTI(int pin, uint32_t maxLoops = MINDSi::QTI_reading_timeout);
-/* */
-bool isRadioOn(int pin, uint32_t timeoutMicros = MINDSi::radio_pulse_timeout);
-/* */
-int getRadioPulse(int pin, bool interrupt);
-/* */
-int getRadio(int pin, bool interrupt = true);
-/* */
-bool fastDigitalRead(int pin);
+/** Return the radio signal present on `pin`
+  * The signal is scaled as if it were a servo signal into the range 0-180
+  * If no signal is present, DEFAULT_RADIO_SIGNAL is returned
+  * If `interrupt`, this will enable an interrupt based signal receiver
+  *     and the call will immediatly return stored values from then on.
+  * If `interrupt` is false or the pin does not support interrupt input,
+  *     The call will wait until a new pulse arrives and time it.
+  **/
+uint16_t getRadio(int pin, bool interrupt = true);
+/** Activate a parallax ping sensor and return the echo time in microseconds */
+uint16_t getPing(int pin, uint16_t maxMicros = MINDSi::PING_READING_TIMEOUT);
+/** Poll a QTI sensor, returning a unitless time based value
+  * smaller values correspond to a higher light intensity hitting the sensor
+  */
+uint16_t QTI(int pin, uint16_t maxLoops = MINDSi::QTI_READING_TIMEOUT);
+/** Determines if a radio signal is present on the given pin */
+bool isRadioOn(int pin, bool interrupt = true);
+/** Return the raw radio pulse length on a given pin, or NO_PULSE */
+uint16_t getRadioPulse(int pin, bool interrupt);
 
 #endif
