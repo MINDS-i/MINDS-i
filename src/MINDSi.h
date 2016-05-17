@@ -39,6 +39,13 @@ namespace MINDSi {
     constexpr uint16_t DEFAULT_RADIO_SIGNAL = 90;
     /** returned by getRadioPulse when no radio pulse is active */
     constexpr uint16_t NO_PULSE = 0xffff;
+    /** read a digital pin quicker than normal digitalRead
+      * by leaving out checks for the pin existing and its PWM mode
+      */
+    inline bool fastDigitalRead(int pin){
+        return *portInputRegister(digitalPinToPort(pin))
+                & digitalPinToBitMask(pin);
+    }
 }
 
 /** Return the radio signal present on `pin`

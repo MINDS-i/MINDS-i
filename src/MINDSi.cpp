@@ -23,12 +23,6 @@ namespace { //limit visibility to this file
     volatile int8_t interruptPin[EXTERNAL_NUM_INTERRUPTS];
     boolean interruptOn[EXTERNAL_NUM_INTERRUPTS];
 
-    //normal digitalRead is slow
-    inline bool fastDigitalRead(int pin){
-        return *portInputRegister(digitalPinToPort(pin))
-                & digitalPinToBitMask(pin);
-    }
-
     template<int num>
     void inline iFunc(void){
         if(fastDigitalRead(interruptPin[num])) pStart[num] = micros();
