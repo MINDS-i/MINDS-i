@@ -17,21 +17,16 @@
 
 using namespace MINDSi;
 
-namespace { //make sure these vars/functions aren't visible outside
-    volatile uint32_t   pStart[EXTERNAL_NUM_INTERRUPTS];
-    volatile uint32_t   pTime [EXTERNAL_NUM_INTERRUPTS];
-    volatile int8_t     interruptPin[EXTERNAL_NUM_INTERRUPTS];
-    boolean             interruptOn[EXTERNAL_NUM_INTERRUPTS];
+namespace { //limit visibility to this file
+    volatile uint32_t pStart[EXTERNAL_NUM_INTERRUPTS];
+    volatile uint32_t pTime[EXTERNAL_NUM_INTERRUPTS];
+    volatile int8_t interruptPin[EXTERNAL_NUM_INTERRUPTS];
+    boolean interruptOn[EXTERNAL_NUM_INTERRUPTS];
 
-    //normal digitalRead is too slow for Interrupt handlers
+    //normal digitalRead is slow
     inline bool fastDigitalRead(int pin){
         return *portInputRegister(digitalPinToPort(pin))
                 & digitalPinToBitMask(pin);
-    }
-
-    boolean inline isIntOn(int interrupt){
-        //the registers differ too much on each chip to read directly
-        return interruptOn[interrupt];
     }
 
     template<int num>
@@ -63,25 +58,30 @@ namespace { //make sure these vars/functions aren't visible outside
 
 uint16_t getRadioPulse(int pin, bool interrupt){
     uint16_t pulse = 0;
-    int iNum  = digitalPinToInterrupt(pin);
+    int iNum = digitalPinToInterrupt(pin);
 
     //get signal width
     if(interrupt && iNum!=NOT_AN_INTERRUPT){
-        if (!isIntOn(iNum)) {
+        if (!interruptOn[iNum]) {
+            interruptPin[iNum] = pin;
+            interruptOn[iNum] = true;
             attachInterrupt(iNum, func[iNum], CHANGE);
-            interruptPin[iNum] = pin; //there is no interruptToDigitalPin Macro
-            interruptOn[iNum]  = true;
             interrupts();
         } else {
-            uint32_t refresh_time = micros()-pStart[iNum];
-            pulse = (refresh_time >= RADIO_PULSE_TIMEOUT)? 0 : pTime[iNum];
+            // copy the start time and high time of the last pulse atomically
+            uint32_t start, length;
+            ATOMIC_BLOCK(ATOMIC_RESTORESTATE){
+                start = pStart[iNum];
+                length = pTime[iNum];
+            }
+            pulse = (micros()-start >= RADIO_PULSE_TIMEOUT)? 0 : length;
         }
     } else {
         pulse = pulseIn(pin, HIGH, RADIO_PULSE_TIMEOUT);
     }
 
     if(pulse == 0) return NO_PULSE;
-    if(pulse > RADIO_PULSE_TIMEOUT) return NO_PULSE;
+    if(pulse > RADIO_INVALID_US) return NO_PULSE;
     return pulse;
 }
 

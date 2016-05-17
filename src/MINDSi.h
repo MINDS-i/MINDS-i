@@ -16,6 +16,7 @@
 #ifndef MINDSi_h
 #define MINDSi_h
 
+#include <util/atomic.h>
 #include "Arduino.h"
 #include "wiring_private.h"
 
@@ -30,6 +31,10 @@ namespace MINDSi {
     constexpr uint16_t RADIO_MIN_US = 600;
     /** high time in microseconds of a radio signal at 180 degrees */
     constexpr uint16_t RADIO_MAX_US = 2400;
+    /** if a signal's high interval exceeds RADIO_INVALID_US, it is not
+      * considered a radio signal by getRadioPulse
+      */
+    constexpr uint16_t RADIO_INVALID_US = 3000;
     /** signal to return from getRadio when nothing is received */
     constexpr uint16_t DEFAULT_RADIO_SIGNAL = 90;
     /** returned by getRadioPulse when no radio pulse is active */
