@@ -6,8 +6,8 @@
 #include "logo.h"
 
 /**
- * For use with the LiquidCrystal_IC2 library available here:
- * https://bitbucket.org/fmalpartida/new-liquidcrystal/downloads/LiquidCrystal_V1.2.1.zip
+ * For use with the NewLiquidCrystal library available here:
+ * https://bitbucket.org/fmalpartida/new-liquidcrystal/downloads
  */
 
 const int I2C_ADDR = 0x27;
@@ -19,7 +19,7 @@ const int D4_pin = 4;
 const int D5_pin = 5;
 const int D6_pin = 6;
 const int D7_pin = 7;
-LiquidCrystal_I2C  lcd(I2C_ADDR,En_pin,Rw_pin,Rs_pin,D4_pin,D5_pin,D6_pin,D7_pin);
+LiquidCrystal_I2C lcd(I2C_ADDR,En_pin,Rw_pin,Rs_pin,D4_pin,D5_pin,D6_pin,D7_pin);
 
 const int pingPins[3] = {9,10,11};
 const int QTIPins[3]  = {A0,A1,A2};
@@ -272,13 +272,13 @@ void QTI(){
 		lcd.print("QTI ");
 	lcd.setCursor(0,1);
 		lcd.print("Sensor A: ");
-		printInPlace(10, QTI(QTIPins[0]));
+		printInPlace(10, (int)QTI(QTIPins[0]));
 	lcd.setCursor(0,2);
 		lcd.print("Sensor B: ");
-		printInPlace(10, QTI(QTIPins[1]));
+		printInPlace(10, (int)QTI(QTIPins[1]));
 	lcd.setCursor(0,3);
 		lcd.print("Sensor C: ");
-		printInPlace(10, QTI(QTIPins[2]));
+		printInPlace(10, (int)QTI(QTIPins[2]));
 }
 /////////// Driving /////////////////////////////////
 void radioDrive(){
@@ -457,7 +457,7 @@ void printInPlace(int places, int number){
 		i/=10;
 	}
 	cap(number, (i*10)-1);
-	for(i; i>0; i/=10){
+	for(; i>0; i/=10){
 		if( hit |= ((number/i)%10 != 0) )
 			lcd.print( (number/i)%10 );
 		else lcd.print(' ');

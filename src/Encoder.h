@@ -37,11 +37,11 @@ private:
 	}
 	static void interrupt(void){
 		stepAverage();
-		if(pin[1]!=-1 && fastDigitalRead(pin[1])) return;
+		if(pin[1]!=-1 && MINDSi::fastDigitalRead(pin[1])) return;
 		tickCount++;
 	}
 	static void Binterrupt(void){
-		if(fastDigitalRead(pin[0])) return;
+		if(MINDSi::fastDigitalRead(pin[0])) return;
 		tickCount--;
 	}
 	static void pushAverage(int16_t val){
