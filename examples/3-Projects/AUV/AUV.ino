@@ -38,6 +38,12 @@ void setup() {
   delay(2000);
 }
 
+//define a steer command that sets front and back servos
+void steer(int out) {
+  frontsteer.write(out);
+  backsteer.write(180 - out);
+}
+
 void loop() {
   int right = getPing(9);
   delay(10);
@@ -90,10 +96,4 @@ void loop() {
     steer(CENTER - steerValue);
     drive.write(FWDSPEED);
   }
-}
-
-//methods are used to save space on simple, but often repeated lines of code
-void steer(int out) {
-  frontsteer.write(out);
-  backsteer.write(180 - out);
 }

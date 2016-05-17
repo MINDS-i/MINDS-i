@@ -42,6 +42,12 @@ void setup() {
   delay(2000);
 }
 
+//define a steer command that sets front and back servos
+void steer(int out) {
+  frontsteer.write(out);
+  backsteer.write(180 - out);
+}
+
 void loop() {
   //this will give manual control if a radio is plugged in
   if (isRadioOn(2)) {
@@ -106,10 +112,4 @@ void autodrive() {
     steer(CENTER - steerValue);
     drive.write(FWDSPEED);
   }
-}
-
-//methods are used to save space on simple, but often repeated lines of code
-void steer(int out) {
-  frontsteer.write(out);
-  backsteer.write(180 - out);
 }
