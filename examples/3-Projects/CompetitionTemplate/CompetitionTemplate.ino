@@ -12,11 +12,15 @@ void setup() {
   drive.write(90);
   steer.write(90);
 
+  // start interrupts on pin 3 so pulses will be captured before isRadioOn
+  // is first called
+  getRadio(3);
+
   delay(2000);
 }
 
 void loop() {
-  if (isRadioOn(2)) {
+  if (isRadioOn(3)) {
     radioControl();
   } else {
     radioOff();
