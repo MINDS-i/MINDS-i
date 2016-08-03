@@ -34,8 +34,9 @@ const int msInCm = 58;
 float RPMtoMPH = ((5. *PI)*60.)/(63360.*(37./13.));
 float STPtoFeet = (5. *PI)/(12.*100.*(37./13.));
 
-const int numWindows = 8;
-void (*window[numWindows])() = { &pingDetail, &pingExpo, &Auto, &Manual, &QTI, &IR};
+void (*window[])() = { &pingDetail, &pingDetail, &pingDetail,
+						 &pingExpo, &Auto, &Manual, &QTI, &IR};
+const int numWindows = sizeof(window)/sizeof(window[0]);
 enum charSet currentCharSet;
 enum buttonSet currentButton;
 bool onRise=false, longRise = false;
@@ -43,7 +44,7 @@ bool radioFound=false;
 
 Servo drive, steer;
 
-int active=1;
+int active=3;
 
 void setup(){
 	lcd.begin (20,4);
@@ -197,7 +198,7 @@ void pingExpo(){
 void pingDetail(){
 	radioDrive();
 	setCustomChars(HORZ);
-	int activePing = active;
+	int activePing = active%3;
 
 	lcd.setCursor(0,0);
 		lcd.print("Ping #");
