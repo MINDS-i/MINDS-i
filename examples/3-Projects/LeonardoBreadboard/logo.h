@@ -495,13 +495,4 @@ enum charSet {
   HORZ
 };
 
-enum buttonSet {
-  LEFT = 0,
-  RIGHT = 4,
-  UP = 1,
-  DOWN = 2,
-  START = 5,
-  FREE = 8
-};
-
 #endif

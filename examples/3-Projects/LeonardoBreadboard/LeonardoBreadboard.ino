@@ -21,30 +21,43 @@ const int D6_pin = 6;
 const int D7_pin = 7;
 LiquidCrystal_I2C lcd(I2C_ADDR,En_pin,Rw_pin,Rs_pin,D4_pin,D5_pin,D6_pin,D7_pin);
 
+enum Button { LEFT, RIGHT, NOOP };
+
 const int pingPins[3] = {9,10,11};
 const int QTIPins[3]  = {A0,A1,A2};
-const int radioPins[2] = {1,0}; //radio Drive, Steer
+const int radioPins[2] = {0,1}; //radio Drive, Steer
 const int servoPins[2] = {4,5}; //Drive, steer
 const int IRPins[2] = {12, 13};
-const int buttonPin[2] = {6,8};
-const String mindsi =   "MINDS-i  ";
-const String robotics = "Robotics ";
+const int buttonPin[2] = {8,6};
 const int msInInch = 148;
 const int msInCm = 58;
-float RPMtoMPH = ((5. *PI)*60.)/(63360.*(37./13.));
-float STPtoFeet = (5. *PI)/(12.*100.*(37./13.));
+const float RPMtoMPH = ((5. *PI)*60.)/(63360.*(37./13.));
+const float STPtoFeet = (5. *PI)/(12.*100.*(37./13.));
 
-void (*window[])() = { &pingDetail, &pingDetail, &pingDetail,
-						 &pingExpo, &Auto, &Manual, &QTI, &IR};
+void pingDetailedView(int pingNumber);
+void pingExpo();
+void IR();
+void Auto();
+void Manual();
+void QTI();
+
+void (*window[])() = {
+					   &pingExpo,
+					   [](){ pingDetailedView(0); },
+					   [](){ pingDetailedView(1); },
+					   [](){ pingDetailedView(2); },
+					   &QTI,
+					   &IR,
+					   &Auto,
+					   &Manual,
+					  };
 const int numWindows = sizeof(window)/sizeof(window[0]);
+int active=0;
+
 enum charSet currentCharSet;
-enum buttonSet currentButton;
-bool onRise=false, longRise = false;
-bool radioFound=false;
-
+enum Button currentButton;
+bool onRise=false;
 Servo drive, steer;
-
-int active=3;
 
 void setup(){
 	lcd.begin (20,4);
@@ -54,64 +67,44 @@ void setup(){
 	lcd.backlight();
 	lcd.noAutoscroll();
 
-	Logo();
+	AnimateLogo();
 
-	drive.attach(servoPins[0]); drive.write(90);
-	steer.attach(servoPins[1]); steer.write(90);
+	drive.attach(servoPins[0]);
+	steer.attach(servoPins[1]);
+	drive.write(90);
+	steer.write(90);
 	getRadio(radioPins[0]);
 	getRadio(radioPins[1]);
 
-	delay(2000);
+	delay(1000);
 }
 
 void checkButtons(){
-	int tmpButton;
-	#define INVERT true
-	#if INVERT
-	if(!digitalRead(buttonPin[0])) tmpButton = 4;
-	else if(!digitalRead(buttonPin[1])) tmpButton = 0;
-	else tmpButton = 6;
-	#else
-	if(digitalRead(buttonPin[0])) tmpButton = 4;
-	else if(digitalRead(buttonPin[1])) tmpButton = 0;
-	else tmpButton = 6;
-	#endif
+	const boolean invert = true;
+	boolean left = digitalRead(buttonPin[0]);
+	boolean right = digitalRead(buttonPin[1]);
+
+	Button tmpButton = NOOP;
+	if(left ^ invert) tmpButton = LEFT;
+	else if (right ^ invert) tmpButton = RIGHT;
+
 	onRise |= (currentButton != tmpButton);
-	switch(tmpButton){
-		case 0:
-			currentButton = LEFT;
-			break;
-		case 1:
-			currentButton = UP;
-			break;
-		case 2:
-			currentButton = DOWN;
-			break;
-		case 4:
-			currentButton = RIGHT;
-			break;
-		case 5:
-			currentButton = START;
-			break;
-		default:
-			currentButton = FREE;
-	}
+	currentButton = tmpButton;
 }
 
 void loop(){
 	checkButtons();
-	longRise = onRise;
-	if(onRise && currentButton == LEFT) {
-		active -= 1;
+
+	if(onRise){
+		onRise = false;
 		lcd.clear();
+
+		if(currentButton == LEFT) active = (active-1);
+		if(currentButton == RIGHT) active = (active+1);
+
+		if(active >= numWindows) active = 0;
+		if(active < 0) active = (numWindows-1);
 	}
-	else if(onRise && currentButton == RIGHT) {
-		active +=1;
-		lcd.clear();
-	}
-	onRise = false;
-	if(active >= numWindows) active = 0;
-	if(active < 0) active = (numWindows-1);
 
 	window[active]();
 
@@ -122,11 +115,13 @@ void loop(){
 		printInPlace(3, steer.read());
 }
 
-void Logo(){
+void AnimateLogo(){
 	setCustomChars(EYE);
 	lcd.home();
-	const int frames = 40;
-	const int slide = 200;
+	const int blinkDelay = 40;
+	const int slideDelay = 40;
+	const String mindsi = "MINDS-i  ";
+	const String robotics = "Robotics ";
 
 	for(int pos=-3; pos< 5; pos++){
 		for(int i=0; i<4; i++){
@@ -143,7 +138,7 @@ void Logo(){
 			lcd.setCursor(pos-1,2);
 			lcd.print(" ");
 		}
-		delay(slide);
+		delay(slideDelay);
 	}
 	for(int pos=20; pos>7; pos--){
 		for(int i=0; i<9; i++){
@@ -154,17 +149,17 @@ void Logo(){
 				lcd.print(robotics[i]);
 			}
 		}
-		delay(slide);
+		delay(slideDelay);
 	}
 
 	for(int step = 2; step<8; step++){
 		setCustomChars((charSet) step);
-		delay(frames);
+		delay(blinkDelay);
 	}
-	delay(frames);
+	delay(blinkDelay);
 	for(int step = 7; step>0; step--){
 		setCustomChars((charSet) step);
-		delay(frames);
+		delay(blinkDelay);
 	}
 
 	lcd.clear();
@@ -195,10 +190,10 @@ void pingExpo(){
 	delay(10);
 }
 
-void pingDetail(){
+void pingDetailedView(int activePing){
 	radioDrive();
 	setCustomChars(HORZ);
-	int activePing = active%3;
+	//int activePing = active%3;
 
 	lcd.setCursor(0,0);
 		lcd.print("Ping #");
@@ -283,8 +278,8 @@ void QTI(){
 }
 /////////// Driving /////////////////////////////////
 void radioDrive(){
-		steer.write(getRadio(radioPins[0]));
-		drive.write(getRadio(radioPins[1]));
+	steer.write(getRadio(radioPins[0]));
+	drive.write(getRadio(radioPins[1]));
 }
 
 void AutonoDrive(String& msg){
