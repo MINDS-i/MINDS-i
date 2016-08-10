@@ -38,4 +38,7 @@ void loop() {
     //otherwise go forward
     drive.write(100);
   }
+
+  // wait for potential echos to die down
+  delay(50);
 }

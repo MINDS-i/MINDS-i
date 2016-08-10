@@ -30,4 +30,7 @@ void loop() {
   	Serial.print("\t");
   	Serial.println(getPing(11));
   */
+
+  // wait for potential echos to die down
+  delay(50);
 }
