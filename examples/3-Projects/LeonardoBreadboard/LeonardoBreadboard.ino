@@ -76,6 +76,9 @@ void setup(){
 	getRadio(radioPins[0]);
 	getRadio(radioPins[1]);
 
+	pinMode(IRPins[0], INPUT);
+	pinMode(IRPins[1], INPUT);
+
 	delay(1000);
 }
 
@@ -228,12 +231,10 @@ void IR(){
 		lcd.print("IR");
 	lcd.setCursor(0,1);
 		lcd.print("Left:  ");
-		if(digitalRead(IRPins[0])) lcd.print("On ");
-		else lcd.print("Off");
+		lcd.print( (digitalRead(IRPins[0])? "On " : "Off" ) );
 	lcd.setCursor(0,2);
 		lcd.print("Right: ");
-		if(digitalRead(IRPins[1])) lcd.print("On ");
-		else lcd.print("Off");
+		lcd.print( (digitalRead(IRPins[1])? "On " : "Off" ) );
 	lcd.setCursor(0,3);
 }
 
