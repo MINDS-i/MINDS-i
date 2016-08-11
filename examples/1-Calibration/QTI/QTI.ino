@@ -10,6 +10,13 @@
 / This code expects a QTI sensor plugged into pin A0
 / Or, Swap out the comments below to read three sensors
 / on pins A0, A1, and A2
+/
+/ Proper QTI sensor wiring:
+/                   ---------------------
+/ Positive (Red)  --| W   .-.   |-|-| i |
+/ Signal (White)  --| R  (   )  |-|-| T |
+/ Ground (black)  --| B   '-'   |-|-| Q |
+/                   ---------------------
 /***************************************************/
 
 int val;

@@ -10,6 +10,13 @@
 / This example expects an ESC plugged into pin 4
 / A servo plugged into pin 5
 / and a trio of QTI's in A0, A1, and A2
+/
+/ Proper QTI sensor wiring:
+/                   ---------------------
+/ Positive (Red)  --| W   .-.   |-|-| i |
+/ Signal (White)  --| R  (   )  |-|-| T |
+/ Ground (black)  --| B   '-'   |-|-| Q |
+/                   ---------------------
 /***************************************************/
 
 Servo steer, drive;
